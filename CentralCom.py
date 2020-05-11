@@ -4,6 +4,9 @@ import matplotlib.pyplot as mp
 import math
 
 Fulltime = 200
+ctr = 0
+dead_ctr = 0
+full_list = []
 
 
 def replication(d_ch=0.05, r_ch=0.1):
@@ -17,20 +20,18 @@ def death(c):
     c.death_st = 1
 
 
-ctr = 0
-dead_ctr = 0
-fo = open("C:/Users/tush_/Documents/records.txt", "wb")
-for a in range(200):
+def epoch():
     L = []
     K = []
+    global full_list
     full_list = []
-    timestep = 0
+    time_step = 0
     replication()
-    while timestep < Fulltime:
-        K.append(timestep + 1)
+    while time_step < Fulltime:
+        K.append(time_step + 1)
         if random.random() > 10:
             replication()
-        timestep = timestep + 1
+        time_step = time_step + 1
         count = 0
         for i in full_list:
             if i.death_st == 0:
@@ -48,8 +49,14 @@ for a in range(200):
         print(k, end=' ')
     print("\n")
     mp.plot(K, L)
-    if L[Fulltime-1] == 0:
+    if L[Fulltime - 1] == 0:
+        global dead_ctr
         dead_ctr = dead_ctr + 1
+
+
+q = int(input("Enter the number of epoches:"))
+for a in range(q):
+    epoch()
 print("\n")
 print(dead_ctr, end=" lifelines went dead \n")
 mp.ylabel("Number of Creatures")
